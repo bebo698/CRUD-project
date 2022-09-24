@@ -21,7 +21,7 @@ function gettotal() {
     else {
         total.innerHTML = '';
         total.style.background = '#a00d02';
-  
+
     }
 
 }
@@ -39,7 +39,7 @@ else {
 }
 
 submit.onclick = function () {
- 
+
     let newpro = {
         title: title.value,
         price: price.value,
@@ -50,38 +50,110 @@ submit.onclick = function () {
         count: count.value,
         category: category.value,
 
-    }
-    
-    if ( (title.value && taxes.value && discount.value && ads.value && count.value && price.value && category.value ) != '' )
-    {
-        for (let i = 0; i < datapro.length; i++)
-        {
-            if (title.value != datapro[i].title )
-            {
+    };
+    if ((title.value && taxes.value && discount.value && ads.value && count.value && price.value && category.value) != '') {
 
-            }
-            else {
-                console.log("يبنى ده موجود")
-            }
-        }
-    datapro.push(newpro);
-    localStorage.setItem('product', JSON.stringify(datapro));
-    clearData ()
+        // let create = datapro.every(({title : _title}) => {
+        //     return (!(_title === title.value))
+        // });
+        // if(create) {
+        //     datapro.push(newpro);
+        // }else {
+        //     alert("Kosamk");
+        // }
+
+
+
+        // let create = datapro.every((x) => {
+        //     return (!(x.title === title.value))
+        // });
+        // if(create) {
+        //     datapro.push(newpro);
+        // }else {
+        //     alert("Kosamk");
+        // }
+
+
+        // let create = datapro.every((x) => (!(x.title === title.value)));
+        // if(create) {
+        //     datapro.push(newpro);
+        // }else {
+        //     alert("Kosamk");
+        // }
+
+
+        // let found = false;
+        // for(let x of datapro) {
+        //     if(x.title === title.value) {
+        //         found = true;
+        //     }
+        // }
+
+        // if(found) {
+        //     alert("KOsamk");
+        // }else {
+        //     datapro.push(newpro);
+        // }
+
+
+        // // for (let i = 0; i < datapro.length; i++)
+        // {
+        //     if (title.value == datapro[i].title )
+        //     {
+        //         console.log("يبنى ده موجود")
+        //         clearData();
+        //     }
+        //     else {
+        //         datapro.push(newpro);
+
+        //     }
+
+        // }
+        datapro.push(newpro);
+        console.log(datapro);
+        localStorage.setItem('product', JSON.stringify(datapro));
+        ShowData();
+        clearData()
     }
     else {
-      alert("please recheck");
+        alert("please recheck");
     }
 
 }
 
+function ShowData() {
+    let table = '';
+    for (let i = 0; i < datapro.length; i++) {
+        table += `
+       <tr>
+       <td>${i}</td>
+       <td>${datapro[i].title}</td>
+       <td>${datapro[i].price}</td>
+       <td>${datapro[i].taxes}</td>
+       <td>${datapro[i].ads}</td>
+       <td>${datapro[i].discount}</td>
+       <td>${datapro[i].total}</td>
+       <td>${datapro[i].category}</td>
 
+       <td><button id="update">Update</button></td>
+       <td><button onclick="DeleteData(${i})" id="delete">delete</button></td>
+   </tr>`
+    }
+    document.getElementById('tbody').innerHTML = table;
+    let btnDelete = document.getElementById('deleteAll');
+    if (datapro.length > 0) {
+        btnDelete.innerHTML = `<button onclick="DeleteAll()" id="deleteall">DeleteAll</button>`
+    }
+
+}
+ShowData()
 
 //save localstorage
 
 
 //clear inputs
 
- function clearData () {
+function clearData() {
     title.value = '';
     ads.value = '';
     discount.value = '';
@@ -94,29 +166,14 @@ submit.onclick = function () {
 
 }
 
-// read
+function DeleteAll ()
+{
+    localStorage.clear();
+    datapro.splice(0);
+    ShowData();
+}
 
-function ShowData() {
-     let table = '';
-    for (let i = 0; i < datapro.length; i++) {
-       table+=`
-       <tr>
-       <td>${i}</td>
-       <td>${datapro[i].title}</td>
-       <td>${datapro[i].price}</td>
-       <td>${datapro[i].taxes}</td>
-       <td>${datapro[i].ads}</td>
-       <td>${datapro[i].discount}</td>
-       <td>${datapro[i].total}</td>
-       <td>${datapro[i].category}</td>
 
-       <td><button id="update">Update</button></td>
-       <td><button id="update">delete</button></td>
-   </tr>` 
-    }
-    document.getElementById('tbody').innerHTML = table;
- }
- ShowData()
 
 // function clearData() {
 
@@ -125,6 +182,12 @@ function ShowData() {
 // count
 
 //delete
+function DeleteData(i) {
+    datapro.splice(i, 1);
+    localStorage.product = JSON.stringify(datapro);
+    ShowData();
+}
+
 
 //update
 
