@@ -141,12 +141,13 @@ submit.onclick = function () {
         clearData()
     }
     else {
-        alert("please recheck");
+        alert("please ReCheck");
     }
 
 }
 
 function ShowData() {
+    gettotal()
     let table = '';
     for (let i = 0; i < datapro.length; i++) {
         table += `
@@ -232,6 +233,10 @@ function  update (i)
     submit.innerHTML= 'UPDATE'
     mood = 'update';
     temp=i;
+    scroll({
+        top:0,
+        behavior:"smooth"
+    })
     // datapro[i].push ();
 
 
@@ -239,9 +244,84 @@ function  update (i)
 
 
 // search
+let searchmood = 'title'
+function getSearch(id) 
+{
+    let search = document.getElementById ('search')
+
+    if (id == 'searchtitle')
+    {
+        searchmood = 'title'
+     }
+    else {
+        searchmood = 'category';
+
+    }
+    search.placeholder ='search by ' + searchmood;
+
+    search.focus()
+    search.value = '' ;
+    ShowData ();
+  }
+  function searchdate (value )
+  {
+    let table = '';
+    if (searchmood == 'title')
+    {
+        for (let i=0 ; i <datapro.length ; i++)
+        {
+        if (    datapro[i].title.includes(value) )
+        {
+            table += `
+            <tr>
+            <td>${i}</td>
+            <td>${datapro[i].title}</td>
+            <td>${datapro[i].price}</td>
+            <td>${datapro[i].taxes}</td>
+            <td>${datapro[i].ads}</td>
+            <td>${datapro[i].discount}</td>
+            <td>${datapro[i].total}</td>
+            <td>${datapro[i].category}</td>
+     
+            <td><button onclick="update(${i})" id="update">Update</button></td>
+            <td><button onclick="DeleteData(${i})" id="delete">delete</button></td>
+        </tr>`
+         }
+         else {
+
+         }
+        }
+
+    }else{
+        for (let i=0 ; i <datapro.length ; i++)
+        {
+        if (    datapro[i].category.includes(value) )
+        {
+            table += `
+            <tr>
+            <td>${i}</td>
+            <td>${datapro[i].title}</td>
+            <td>${datapro[i].price}</td>
+            <td>${datapro[i].taxes}</td>
+            <td>${datapro[i].ads}</td>
+            <td>${datapro[i].discount}</td>
+            <td>${datapro[i].total}</td>
+            <td>${datapro[i].category}</td>
+     
+            <td><button onclick="update(${i})" id="update">Update</button></td>
+            <td><button onclick="DeleteData(${i})" id="delete">delete</button></td>
+        </tr>`
+         }
+         else {
+
+         }
+        }
+    }
+    document.getElementById('tbody').innerHTML = table;
+   }
 
 //clean
-
+ 
 // function to check if the Data you entered have entered before so recall false 
 
 
